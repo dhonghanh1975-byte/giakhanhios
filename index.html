@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gia Khánh IOS - AI Panel</title>
+
+<style>
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:Arial,sans-serif;
+
+}
+
+body{
+
+background:#050505;
+
+color:white;
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+background:
+
+radial-gradient(circle at top,#00ffff22,transparent 40%),
+
+radial-gradient(circle at bottom,#ff00ff22,transparent 40%);
+
+z-index:-2;
+
+}
+
+.header{
+
+text-align:center;
+
+padding:30px 15px;
+
+}
+
+.logo{
+
+font-size:3rem;
+
+font-weight:900;
+
+letter-spacing:-2px;
+
+}
+
+.glow{
+
+color:white;
+
+text-shadow:
+
+0 0 10px #00ffff,
+
+0 0 20px #00ffff,
+
+0 0 40px #00ffff;
+
+}
+
+.sub{
+
+margin-top:10px;
+
+font-size:1rem;
+
+color:#ccc;
+
+letter-spacing:3px;
+
+}
+
+.panel{
+
+width:92%;
+
+max-width:500px;
+
+margin:auto;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.15);
+
+backdrop-filter:blur(12px);
+
+border-radius:25px;
+
+padding:20px;
+
+box-shadow:
+
+0 0 30px rgba(0,255,255,.15);
+
+}
+
+input{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+background:#111;
+
+color:white;
+
+font-size:16px;
+
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+margin-top:15px;
+
+border:none;
+
+border-radius:12px;
+
+font-weight:bold;
+
+font-size:16px;
+
+cursor:pointer;
+
+background:linear-gradient(90deg,#00ffff,#ff00ff);
+
+color:black;
+
+}
+
+.loading{
+
+margin-top:20px;
+
+line-height:1.8;
+
+color:#00ffff;
+
+}
+
+.result{
+
+margin-top:20px;
+
+display:none;
+
+}
+
+.card{
+
+background:#111;
+
+border:1px solid #00ffff55;
+
+border-radius:12px;
+
+padding:12px;
+
+margin-top:10px;
+
+box-shadow:0 0 15px #00ffff22;
+
+}
+
+.footer{
+
+margin-top:25px;
+
+text-align:center;
+
+font-size:13px;
+
+color:#aaa;
+
+}
+
+.status{
+
+margin-top:15px;
+
+padding:12px;
+
+border-radius:10px;
+
+background:#081010;
+
+border:1px solid #00ffff44;
+
+}
+
+@keyframes blink{
+
+50%{opacity:.3}
+
+}
+
+.scan{
+
+animation:blink .8s infinite;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="logo glow">Gia Khánh IOS</div>
+
+<div class="sub">PANEL • AIM • REG FF</div>
+
+</div>
+
+<div class="panel">
+
+<input
+
+id="device"
+
+placeholder="Nhập thiết bị (VD: iPhone 15 Pro Max)"
+
+>
+
+<button onclick="startScan()">
+
+⚡ PHÂN TÍCH AI VIP
+
+</button>
+
+<div id="loading" class="loading"></div>
+
+<div id="result" class="result"></div>
+
+<div class="footer">
+
+UY TÍN LÀM NÊN THƯƠNG HIỆU
+
+</div>
+
+</div>
+
+<script>
+
+function rand(min,max){
+
+return Math.floor(Math.random()*(max-min+1))+min;
+
+}
+
+function startScan(){
+
+const device =
+
+document.getElementById("device").value;
+
+if(device===""){
+
+alert("Nhập tên thiết bị trước!");
+
+return;
+
+}
+
+const loading =
+
+document.getElementById("loading");
+
+const result =
+
+document.getElementById("result");
+
+result.style.display="none";
+
+loading.innerHTML=`
+
+<div class="scan">
+
+[✓] Đã nhận diện: ${device}<br>
+
+[✓] Kết nối AI Server...<br>
+
+[✓] Phân tích cảm ứng...<br>
+
+[✓] Quét hiệu năng GPU...<br>
+
+[✓] Tối ưu hóa độ nhạy...
+
+</div>
+
+`;
+
+setTimeout(()=>{
+
+loading.innerHTML="";
+
+result.innerHTML=`
+
+<div class="status">
+
+🤖 AI ENGINE: GK-IOS V9.8<br>
+
+📱 Thiết bị: ${device}<br>
+
+⚡ Tương thích: 99.8%
+
+</div>
+
+<div class="card">👁 Nhìn xung quanh: ${rand(170,200)}</div>
+
+<div class="card">🎯 Ống ngắm hồng tâm: ${rand(180,200)}</div>
+
+<div class="card">🔭 Ống ngắm X2: ${rand(170,195)}</div>
+
+<div class="card">🔭 Ống ngắm X4: ${rand(150,190)}</div>
+
+<div class="card">🎯 Ống ngắm súng ngắm: ${rand(60,120)}</div>
+
+<div class="card">📷 Nút camera tự do: ${rand(70,100)}%</div>
+
+<div class="status">
+
+✅ AI Optimization Complete<br>
+
+🔥 FPS Stability: ${rand(95,100)}%<br>
+
+⚡ Touch Response: ${rand(1,5)}ms
+
+</div>
+
+`;
+
+result.style.display="block";
+
+},4000);
+
+}
+
+</script>
+
+</body>
+
+</html>
