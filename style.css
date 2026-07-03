@@ -1,0 +1,361 @@
+/* ==========================
+
+   CYBER OS STYLE
+
+========================== */
+
+/* Reset */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html,body{
+
+    width:100%;
+
+    height:100%;
+
+    overflow:hidden;
+
+    font-family:'Orbitron',sans-serif;
+
+    background:#070707;
+
+    color:#fff;
+
+}
+
+/* Theme */
+
+:root{
+
+    --red:#ff1b1b;
+
+    --red-dark:#8b0000;
+
+    --glass:rgba(25,25,25,.38);
+
+    --border:rgba(255,0,0,.25);
+
+    --shadow:0 0 25px rgba(255,0,0,.35);
+
+    --blur:blur(16px);
+
+}
+
+/* Background */
+
+body{
+
+    background:
+
+    radial-gradient(circle at top,#180000,#070707 60%);
+
+}
+
+/* Matrix Canvas */
+
+#matrix{
+
+    position:fixed;
+
+    width:100%;
+
+    height:100%;
+
+    left:0;
+
+    top:0;
+
+    z-index:-3;
+
+}
+
+/* Particle Canvas */
+
+#particles{
+
+    position:fixed;
+
+    width:100%;
+
+    height:100%;
+
+    left:0;
+
+    top:0;
+
+    z-index:-2;
+
+}
+
+/* Glass Card */
+
+.card{
+
+    background:var(--glass);
+
+    backdrop-filter:var(--blur);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    box-shadow:var(--shadow);
+
+    transition:.35s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-6px) scale(1.02);
+
+    box-shadow:
+
+    0 0 45px rgba(255,0,0,.65);
+
+}
+
+/* Dashboard */
+
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+    padding:35px;
+
+    height:100vh;
+
+}
+
+/* Title */
+
+.title{
+
+    font-size:34px;
+
+    color:var(--red);
+
+    text-shadow:
+
+    0 0 15px red,
+
+    0 0 35px red;
+
+}
+
+/* Status Card */
+
+.status-card{
+
+    padding:25px;
+
+}
+
+/* Progress */
+
+.progress{
+
+    width:100%;
+
+    height:10px;
+
+    border-radius:20px;
+
+    background:#1a1a1a;
+
+    overflow:hidden;
+
+}
+
+.progress span{
+
+    display:block;
+
+    height:100%;
+
+    width:60%;
+
+    background:linear-gradient(
+
+        90deg,
+
+        #700,
+
+        red,
+
+        #ff5555
+
+    );
+
+    box-shadow:0 0 20px red;
+
+    transition:1s;
+
+}
+
+/* Clock */
+
+.clock{
+
+    font-size:50px;
+
+    text-align:center;
+
+    color:white;
+
+    text-shadow:
+
+    0 0 18px red;
+
+}
+
+.date{
+
+    text-align:center;
+
+    color:#aaa;
+
+    margin-top:8px;
+
+}
+
+/* Logs */
+
+.logs{
+
+    height:320px;
+
+    overflow:hidden;
+
+    padding:15px;
+
+    font-size:14px;
+
+    color:#ff6b6b;
+
+    line-height:1.8;
+
+    font-family:Consolas,monospace;
+
+}
+
+/* Scanline */
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+
+    repeating-linear-gradient(
+
+        transparent 0px,
+
+        transparent 3px,
+
+        rgba(255,255,255,.03) 4px
+
+    );
+
+    pointer-events:none;
+
+    z-index:999;
+
+}
+
+/* Glow Animation */
+
+@keyframes glow{
+
+    0%{box-shadow:0 0 15px red;}
+
+    50%{box-shadow:0 0 40px red;}
+
+    100%{box-shadow:0 0 15px red;}
+
+}
+
+.card{
+
+    animation:glow 3s infinite;
+
+}
+
+/* Fade */
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.card{
+
+    animation:
+
+    fade .8s ease,
+
+    glow 3s infinite;
+
+}
+
+/* Responsive */
+
+@media(max-width:1100px){
+
+.dashboard{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:700px){
+
+.dashboard{
+
+grid-template-columns:1fr;
+
+padding:15px;
+
+}
+
+.clock{
+
+font-size:34px;
+
+}
+
+}
