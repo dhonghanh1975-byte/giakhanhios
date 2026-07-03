@@ -1,1153 +1,209 @@
 <!DOCTYPE html>
-
 <html lang="vi">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gia Khánh iOS - CyberOS</title>
 
-<title>Gia Khánh IOS - Neural AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-
-margin:0;
-
-padding:0;
-
-box-sizing:border-box;
-
-font-family:'Inter',sans-serif;
-
-}
-
-:root{
-
---pink:#ff00c8;
-
---purple:#8b5cf6;
-
---cyan:#00e5ff;
-
---bg:#050505;
-
-}
-
-body{
-
-background:var(--bg);
-
-color:white;
-
-overflow-x:hidden;
-
-min-height:100vh;
-
-position:relative;
-
-}
-
-/* CYBER BACKGROUND */
-
-.orb1{
-
-position:fixed;
-
-width:500px;
-
-height:500px;
-
-border-radius:50%;
-
-background:#8b5cf6;
-
-filter:blur(180px);
-
-opacity:.22;
-
-top:-200px;
-
-left:-150px;
-
-animation:float1 10s ease-in-out infinite;
-
-z-index:-2;
-
-}
-
-.orb2{
-
-position:fixed;
-
-width:450px;
-
-height:450px;
-
-border-radius:50%;
-
-background:#ff00c8;
-
-filter:blur(180px);
-
-opacity:.18;
-
-right:-150px;
-
-bottom:-150px;
-
-animation:float2 12s ease-in-out infinite;
-
-z-index:-2;
-
-}
-
-@keyframes float1{
-
-50%{
-
-transform:
-
-translateY(80px)
-
-translateX(40px);
-
-}
-
-}
-
-@keyframes float2{
-
-50%{
-
-transform:
-
-translateY(-70px)
-
-translateX(-60px);
-
-}
-
-}
-
-/* HEADER */
-
-.header{
-
-text-align:center;
-
-padding-top:40px;
-
-}
-
-.logo{
-
-width:180px;
-
-display:block;
-
-margin:auto;
-
-filter:
-
-drop-shadow(0 0 15px #ff00c8)
-
-drop-shadow(0 0 35px #8b5cf6)
-
-drop-shadow(0 0 60px #00e5ff);
-
-}
-
-.title{
-
-margin-top:15px;
-
-font-size:34px;
-
-font-weight:900;
-
-text-shadow:
-
-0 0 10px white,
-
-0 0 20px #ff00c8,
-
-0 0 40px #8b5cf6;
-
-}
-
-.subtitle{
-
-margin-top:8px;
-
-font-size:13px;
-
-letter-spacing:4px;
-
-color:#cfcfcf;
-
-}
-
-/* MAIN PANEL */
-
-.container{
-
-width:92%;
-
-max-width:520px;
-
-margin:30px auto;
-
-}
-
-.panel{
-
-position:relative;
-
-background:
-
-rgba(255,255,255,.05);
-
-backdrop-filter:
-
-blur(25px);
-
-border:
-
-1px solid rgba(255,255,255,.08);
-
-border-radius:30px;
-
-padding:25px;
-
-overflow:hidden;
-
-box-shadow:
-
-0 0 25px rgba(255,0,200,.15),
-
-0 0 70px rgba(139,92,246,.15);
-
-}
-
-.panel::before{
-
-content:'';
-
-position:absolute;
-
-top:0;
-
-left:-180%;
-
-width:100%;
-
-height:100%;
-
-background:
-
-linear-gradient(
-
-90deg,
-
-transparent,
-
-rgba(255,255,255,.1),
-
-transparent
-
-);
-
-transform:skewX(-20deg);
-
-animation:shine 7s infinite;
-
-}
-
-@keyframes shine{
-
-100%{
-
-left:250%;
-
-}
-
-}
-
-.label{
-
-font-size:13px;
-
-color:#bdbdbd;
-
-margin-bottom:10px;
-
-}
-
-.input{
-
-width:100%;
-
-padding:16px;
-
-border:none;
-
-outline:none;
-
-border-radius:18px;
-
-background:
-
-rgba(255,255,255,.06);
-
-color:white;
-
-font-size:15px;
-
-border:
-
-1px solid rgba(255,255,255,.08);
-
-}
-
-.btn{
-
-width:100%;
-
-margin-top:18px;
-
-padding:16px;
-
-border:none;
-
-border-radius:18px;
-
-font-size:15px;
-
-font-weight:800;
-
-cursor:pointer;
-
-color:white;
-
-background:
-
-linear-gradient(
-
-135deg,
-
-#ff00c8,
-
-#8b5cf6,
-
-#00e5ff
-
-);
-
-box-shadow:
-
-0 0 20px rgba(255,0,200,.4);
-
-}
-
-.btn:active{
-
-transform:scale(.98);
-
-}
-
-.loading{
-
-margin-top:20px;
-
-}
-
-.progress{
-
-height:12px;
-
-margin-top:15px;
-
-background:
-
-rgba(255,255,255,.08);
-
-border-radius:999px;
-
-overflow:hidden;
-
-}
-
-.progress-fill{
-
-height:100%;
-
-width:0%;
-
-border-radius:999px;
-
-background:
-
-linear-gradient(
-
-90deg,
-
-#ff00c8,
-
-#8b5cf6,
-
-#00e5ff
-
-);
-
-box-shadow:
-
-0 0 15px #ff00c8,
-
-0 0 30px #8b5cf6;
-
-}
-
-.result{
-
-display:none;
-
-margin-top:25px;
-
-}
-   /* AI CARD */
-
-.ai-card{
-
-padding:22px;
-
-border-radius:24px;
-
-text-align:center;
-
-background:
-
-linear-gradient(
-
-135deg,
-
-rgba(255,0,200,.15),
-
-rgba(139,92,246,.15)
-
-);
-
-border:
-
-1px solid rgba(255,255,255,.08);
-
-margin-bottom:22px;
-
-box-shadow:
-
-0 0 25px rgba(255,0,200,.15);
-
-}
-
-.score{
-
-font-size:48px;
-
-font-weight:900;
-
-background:
-
-linear-gradient(
-
-90deg,
-
-#ff00c8,
-
-#8b5cf6,
-
-#00e5ff
-
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
-}
-
-.score-text{
-
-margin-top:8px;
-
-font-size:13px;
-
-letter-spacing:2px;
-
-color:#d0d0d0;
-
-}
-
-.device-name{
-
-margin-top:10px;
-
-font-size:14px;
-
-font-weight:600;
-
-}
-
-/* SENSITIVITY */
-
-.sens-item{
-
-margin-top:18px;
-
-}
-
-.sens-head{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:8px;
-
-font-size:14px;
-
-font-weight:600;
-
-}
-
-.ff-bar{
-
-height:14px;
-
-background:
-
-rgba(255,255,255,.08);
-
-border-radius:999px;
-
-overflow:hidden;
-
-border:
-
-1px solid rgba(255,255,255,.05);
-
-}
-
-.ff-fill{
-
-height:100%;
-
-width:0;
-
-border-radius:999px;
-
-background:
-
-linear-gradient(
-
-90deg,
-
-#ff00c8,
-
-#8b5cf6,
-
-#00e5ff
-
-);
-
-box-shadow:
-
-0 0 15px #ff00c8,
-
-0 0 25px #8b5cf6,
-
-0 0 40px #00e5ff;
-
-}
-
-/* STATS */
-
-.stats{
-
-display:grid;
-
-grid-template-columns:
-
-repeat(3,1fr);
-
-gap:10px;
-
-margin-top:25px;
-
-}
-
-.stat{
-
-padding:15px;
-
-text-align:center;
-
-border-radius:18px;
-
-background:
-
-rgba(255,255,255,.05);
-
-border:
-
-1px solid rgba(255,255,255,.08);
-
-}
-
-.stat h3{
-
-font-size:20px;
-
-margin-bottom:6px;
-
-color:#00e5ff;
-
-}
-
-.stat p{
-
-font-size:11px;
-
-color:#bdbdbd;
-
-}
-
-/* FOOTER */
-
-.footer{
-
-margin-top:30px;
-
-text-align:center;
-
-font-size:12px;
-
-color:#9c9c9c;
-
-letter-spacing:2px;
-
-}
-
-/* PARTICLES */
-
-.particle{
-
-position:fixed;
-
-border-radius:50%;
-
-pointer-events:none;
-
-background:white;
-
-box-shadow:
-
-0 0 10px white,
-
-0 0 20px #00e5ff;
-
-}
-
-</style>
-
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<div class="orb1"></div>
+<canvas id="matrix"></canvas>
+<canvas id="particles"></canvas>
 
-<div class="orb2"></div>
-
-<div class="header">
-
-<img src="logo.png" class="logo">
-
-<div class="title">
-
-GIA KHÁNH IOS
-
-</div>
-
-<div class="subtitle">
-
-NEURAL SENSITIVITY ANALYZER
-
-</div>
-
-</div>
-
-<div class="container">
+<div class="scanline"></div>
+<div class="noise"></div>
 
 <div class="panel">
 
-<div class="label">
+<header>
 
-THIẾT BỊ CỦA BẠN
+<h1>Gia Khánh iOS</h1>
+
+<p class="subtitle">
+CYBER OPERATING DASHBOARD
+</p>
+
+</header>
+
+<section class="device">
+
+<div class="row">
+<span>Thiết bị</span>
+<b>iPhone 11 Pro</b>
+</div>
+
+<div class="row">
+<span>Phiên bản iOS</span>
+<b>17.6.1</b>
+</div>
+
+<div class="row">
+<span>Trạng thái</span>
+
+<div class="online">
+
+<div class="dot"></div>
+
+ONLINE
 
 </div>
+
+</div>
+
+<div class="row">
+<span>Thời gian</span>
+<b id="clock">00:00:00</b>
+</div>
+
+</section>
+
+<h2>FUNCTION</h2>
+
+<div class="module">
+
+<span>Precision Engine</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="sliderBox">
+
+<span>Precision</span>
+
+<input type="range"
+min="0"
+max="100"
+value="100">
+
+</div>
+
+<div class="module">
+<span>Motion Tracking</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="module">
+<span>Visual Optimizer</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="module">
+<span>Response Engine</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="module">
+<span>Resource Sync</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="module">
+<span>Target Analysis</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="module">
+<span>Network Boost</span>
+
+<label class="switch">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<h2>SETTINGS</h2>
+
+<div class="sliderBox">
+
+<span>Speed</span>
 
 <input
-
-id="device"
-
-class="input"
-
-placeholder="Tên Thiết Bị Của Bạn">
-
-<button
-
-class="btn"
-
-onclick="analyzeDevice()">
-
-ĐỘ NHẠY SIÊU VIP CỦA GIA KHÁNH PHÂN TÍCH ‼️
-
-</button>
-
-<div
-
-id="loading"
-
-class="loading">
+type="range"
+min="1"
+max="8"
+step="0.1"
+value="1">
 
 </div>
 
-<div
+<div class="sliderBox">
 
-id="result"
+<span>Camera Distance</span>
 
-class="result">
+<input
+type="range"
+min="0"
+max="200"
+value="100">
 
 </div>
 
-<div class="footer">
+<h2>THÔNG TIN</h2>
 
-GIA KHÁNH IOS • PREMIUM AI ENGINE
+<div class="contact">
+
+<p>Zalo: 0336104578</p>
+
+<p>Telegram: @gkhanhregedit</p>
 
 </div>
 
 </div>
 
-</div>
+<div id="toast">
 
-<script>
-   function rand(min,max){
+<div class="icon">✓</div>
 
-return Math.floor(Math.random()*(max-min+1))+min;
+<div>
 
-}
+<h3>Module Activated</h3>
 
-function createBar(name,value,max){
-
-let percent=(value/max)*100;
-
-return `
-
-<div class="sens-item">
-
-<div class="sens-head">
-
-<span>${name}</span>
-
-<span>${value}</span>
-
-</div>
-
-<div class="ff-bar">
-
-<div
-
-class="ff-fill"
-
-style="width:${percent}%">
+<p>System loaded successfully.</p>
 
 </div>
 
 </div>
 
-</div>
-
-`;
-
-}
-
-function analyzeDevice(){
-
-const device=
-
-document
-
-.getElementById("device")
-
-.value
-
-.trim();
-
-if(!device){
-
-alert("Nhập tên thiết bị!");
-
-return;
-
-}
-
-const loading=
-
-document
-
-.getElementById("loading");
-
-const result=
-
-document
-
-.getElementById("result");
-
-result.style.display="none";
-
-loading.innerHTML=`
-
-<div style="font-size:14px;line-height:2;">
-
-✓ Detecting Device<br>
-
-✓ Reading Touch Sensor<br>
-
-✓ Analyzing Display<br>
-
-✓ Generating Sensitivity<br>
-
-<div class="progress">
-
-<div
-
-id="progressFill"
-
-class="progress-fill">
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-let width=0;
-
-const interval=
-
-setInterval(()=>{
-
-width+=2;
-
-const fill=
-
-document
-
-.getElementById("progressFill");
-
-if(fill){
-
-fill.style.width=
-
-width+"%";
-
-}
-
-if(width>=100){
-
-clearInterval(interval);
-
-}
-
-},80);
-
-setTimeout(()=>{
-
-loading.innerHTML="";
-
-const score=
-
-(95+Math.random()*5)
-
-.toFixed(1);
-
-const look=
-
-rand(170,200);
-
-const red=
-
-rand(180,200);
-
-const x2=
-
-rand(165,195);
-
-const x4=
-
-rand(145,190);
-
-const sniper=
-
-rand(60,120);
-
-const free=
-
-rand(70,100);
-
-result.innerHTML=`
-
-<div class="ai-card">
-
-<div class="score">
-
-${score}
-
-</div>
-
-<div class="score-text">
-
-ĐỘ NHẠY THÍCH HỢP VỚI THIẾT BỊ 📌
-
-</div>
-
-<div class="device-name">
-
-📱 ${device}
-
-</div>
-
-</div>
-
-${createBar(
-
-"👁 Nhìn xung quanh",
-
-look,
-
-200
-
-)}
-
-${createBar(
-
-"🎯 Ống ngắm hồng tâm",
-
-red,
-
-200
-
-)}
-
-${createBar(
-
-"🔭 Ống ngắm X2",
-
-x2,
-
-200
-
-)}
-
-${createBar(
-
-"🔭 Ống ngắm X4",
-
-x4,
-
-200
-
-)}
-
-${createBar(
-
-"🎯 Ống ngắm súng ngắm",
-
-sniper,
-
-120
-
-)}
-
-${createBar(
-
-"📷 Camera tự do",
-
-free,
-
-100
-
-)}
-
-<div class="stats">
-
-<div class="stat">
-
-<h3>
-
-${rand(95,100)}%
-
-</h3>
-
-<p>
-
-FPS Stability
-
-</p>
-
-</div>
-
-<div class="stat">
-
-<h3>
-
-${(1+Math.random()*4)
-
-.toFixed(1)}ms
-
-</h3>
-
-<p>
-
-Touch Latency
-
-</p>
-
-</div>
-
-<div class="stat">
-
-<h3>
-
-ULTRA
-
-</h3>
-
-<p>
-
-AI Rank
-
-</p>
-
-</div>
-
-</div>
-
-`;
-
-result.style.display="block";
-
-},4000);
-
-}
-
-/* PARTICLES */
-
-for(let i=0;i<25;i++){
-
-let p=
-
-document.createElement("div");
-
-p.className=
-
-"particle";
-
-let size=
-
-Math.random()*4+2;
-
-p.style.width=
-
-size+"px";
-
-p.style.height=
-
-size+"px";
-
-p.style.left=
-
-Math.random()*100+"vw";
-
-p.style.top=
-
-Math.random()*100+"vh";
-
-p.style.opacity=
-
-Math.random();
-
-document.body
-
-.appendChild(p);
-
-animateParticle(p);
-
-}
-
-function animateParticle(el){
-
-let duration=
-
-5000+
-
-Math.random()*8000;
-
-let start=
-
-Math.random()*100;
-
-el.animate([
-
-{
-
-transform:
-
-`translateY(${start}px)`
-
-},
-
-{
-
-transform:
-
-`translateY(-120vh)`
-
-}
-
-],{
-
-duration:
-
-duration,
-
-iterations:
-
-Infinity
-
-});
-
-}
-
-</script>
+<script src="js/boot.js"></script>
+<script src="js/matrix.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/hud.js"></script>
 
 </body>
-
-</html> 
+</html>
