@@ -23,6 +23,7 @@
                         radial-gradient(ellipse at 70% 80%, rgba(80, 0, 0, 0.1), transparent 70%),
                         #0a0a0a;
             padding: 16px;
+            margin: 0;
         }
 
         /* ── MAIN PANEL ── */
@@ -53,7 +54,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* floating particles (simulated) */
         .panel::after {
             content: '';
             position: absolute;
@@ -125,7 +125,7 @@
             backdrop-filter: blur(4px);
         }
 
-        /* ── STATUS CARD (Gia Khanh IOS) ── */
+        /* ── STATUS CARD ── */
         .status-card {
             background: rgba(0, 0, 0, 0.6);
             border-radius: 18px;
@@ -188,9 +188,6 @@
             font-family: 'SF Mono', monospace;
             color: #ff6666;
             font-weight: 600;
-        }
-        .status-grid .highlight {
-            color: #ff8844;
         }
 
         /* ── FUNCTION GRID ── */
@@ -447,7 +444,6 @@
             .info-bar { flex-direction: column; align-items: stretch; text-align: center; }
         }
 
-        /* scrollbar hide */
         ::-webkit-scrollbar { display: none; }
         * { scrollbar-width: none; }
     </style>
@@ -515,7 +511,7 @@
             </div>
         </div>
 
-        <!-- SLIDER: FOV (redundant but linked) -->
+        <!-- SLIDER: FOV -->
         <div class="slider-block">
             <div class="slider-head">
                 <span>🎯 FOV Range</span>
@@ -582,7 +578,7 @@
             const unloadBtn = document.getElementById('unloadBtn');
 
             // --- state ---
-            let isActive = true; // all systems go
+            let isActive = true;
             let toastTimeout = null;
 
             // --- clock ---
@@ -604,7 +600,7 @@
                 }, 2800);
             }
 
-            // --- toggle function (buttons) ---
+            // --- toggle function ---
             function toggleFunc(btnEl) {
                 const toggle = btnEl.querySelector('[data-toggle]');
                 const isOn = toggle.classList.toggle('active');
@@ -612,12 +608,6 @@
 
                 const label = btnEl.querySelector('.func-label')?.textContent?.trim() || 'function';
                 const status = isOn ? 'ON' : 'OFF';
-                // update perc if exists
-                const percSpan = btnEl.querySelector('.perc');
-                if (percSpan && isOn) {
-                    // keep as is
-                }
-                // toast feedback
                 showToast(`${label} ${status}`, `⚡ ${label} ${isOn ? 'activated' : 'deactivated'}`);
                 return isOn;
             }
@@ -625,11 +615,9 @@
             // --- attach toggles ---
             document.querySelectorAll('.func-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
-                    // ignore if click on toggle itself (already handled)
                     if (e.target.closest('[data-toggle]')) return;
                     toggleFunc(this);
                 });
-                // toggle click
                 const toggle = btn.querySelector('[data-toggle]');
                 if (toggle) {
                     toggle.addEventListener('click', function(e) {
@@ -644,7 +632,6 @@
                 const val = this.value;
                 fovLabel.textContent = val + '%';
                 fovSliderVal.textContent = val + '%';
-                // also update the AIMFOV button perc
                 const aimfovBtn = document.querySelector('[data-func="aimfov"] .perc');
                 if (aimfovBtn) aimfovBtn.textContent = val + '%';
                 showToast(`FOV ${val}%`, '🎯 Field of view updated');
@@ -665,7 +652,7 @@
                 showToast(`Remote Cam ${val}%`, '📷 Camera range updated');
             });
 
-            // --- ACTIVATE (main) ---
+            // --- ACTIVATE ---
             activateBtn.addEventListener('click', function() {
                 isActive = true;
                 statusIndicator.textContent = '● ACTIVE';
@@ -677,7 +664,6 @@
                         if (tog) tog.classList.add('active');
                     }
                 });
-                // special: turn on straight, ammo, aimkill, telekill (visual)
                 document.querySelector('[data-func="straight"]')?.classList.add('active');
                 document.querySelector('[data-func="straight"] [data-toggle]')?.classList.add('active');
                 document.querySelector('[data-func="ammo"]')?.classList.add('active');
@@ -696,7 +682,7 @@
                 }, 2000);
             });
 
-            // --- SETTINGS (sim) ---
+            // --- SETTINGS ---
             settingsBtn.addEventListener('click', function() {
                 const info = `
                 ⚙️ GIA KHANH IOS · v6.9
@@ -724,7 +710,6 @@
                     const tog = b.querySelector('[data-toggle]');
                     if (tog) tog.classList.remove('active');
                 });
-                // reset FOV slider to 0? no, keep visual
                 showToast('Unloaded', '⛔ All systems offline');
                 this.textContent = '⛔ UNLOADED';
                 setTimeout(() => {
@@ -732,12 +717,12 @@
                 }, 1500);
             });
 
-            // --- initial toast after 1s ---
+            // --- initial toast ---
             setTimeout(() => {
                 showToast('Gia Khanh IOS', '✅ Panel ready · 0x7FF8A3C4');
             }, 600);
 
-            // --- auto-flash status (green blink) ---
+            // --- auto-flash status ---
             setInterval(() => {
                 if (isActive) {
                     const el = statusIndicator;
@@ -745,7 +730,7 @@
                 }
             }, 900);
 
-            // --- prevent layout editing via console (basic) ---
+            // --- prevent layout editing ---
             Object.defineProperty(window, 'FFPanel', {
                 configurable: false,
                 writable: false,
@@ -759,7 +744,6 @@
                 }
             });
 
-            // lock some elements from accidental drag/select
             document.querySelectorAll('.panel *').forEach(el => {
                 el.setAttribute('draggable', 'false');
             });
