@@ -1,0 +1,716 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Internal Panel v5.2.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            user-select: none;
+        }
+        
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 50, 50, 0.05) 0%, transparent 70%),
+                radial-gradient(circle at 80% 70%, rgba(50, 50, 255, 0.05) 0%, transparent 70%);
+        }
+        
+        .panel {
+            width: 420px;
+            background: linear-gradient(145deg, #111111, #1a1a1a);
+            border-radius: 24px;
+            padding: 28px 24px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.8),
+                0 0 0 1px rgba(255, 255, 255, 0.03),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 60, 60, 0.03), transparent, rgba(60, 60, 255, 0.03), transparent);
+            animation: rotateGlow 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+        }
+        
+        .title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .title span {
+            color: #ff4444;
+        }
+        
+        .version {
+            color: #666;
+            font-size: 11px;
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-bar {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-left: 3px solid #00ff88;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+        
+        .status-text {
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .status-text strong {
+            color: #00ff88;
+            font-weight: 700;
+        }
+        
+        .status-time {
+            color: #555;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+        
+        .feature-card.active {
+            border-color: rgba(255, 70, 70, 0.4);
+            background: rgba(255, 70, 70, 0.05);
+            box-shadow: inset 0 0 20px rgba(255, 70, 70, 0.05);
+        }
+        
+        .feature-label {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .feature-value {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .toggle {
+            width: 40px;
+            height: 22px;
+            background: #222;
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .toggle.active {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            border-color: #ff3333;
+        }
+        
+        .toggle::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .toggle.active::after {
+            left: 20px;
+        }
+        
+        .feature-detail {
+            color: #555;
+            font-size: 10px;
+            margin-top: 4px;
+            font-family: monospace;
+            letter-spacing: 0.3px;
+        }
+        
+        .slider-container {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .slider-label {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+        
+        .slider-value {
+            color: #ff4444;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #222, #ff3333);
+            border-radius: 2px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, #ff4444, #aa0000);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #1a1a1a;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+        
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn {
+            padding: 10px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(255, 0, 0, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 24px rgba(255, 0, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #aaa;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background: rgba(255, 50, 50, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 50, 50, 0.15);
+        }
+        
+        .btn-danger:hover {
+            background: rgba(255, 50, 50, 0.2);
+        }
+        
+        .footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .footer-text {
+            color: #333;
+            font-size: 10px;
+            font-family: monospace;
+            letter-spacing: 0.3px;
+        }
+        
+        .footer-text span {
+            color: #ff3333;
+        }
+        
+        .log-container {
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            padding: 8px 12px;
+            max-height: 40px;
+            overflow: hidden;
+            font-family: monospace;
+            font-size: 10px;
+            color: #444;
+            border: 1px solid rgba(255,255,255,0.03);
+            width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .hotkey-hint {
+            color: #444;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            padding: 2px 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <!-- Header -->
+        <div class="header">
+            <div class="title-group">
+                <div class="logo">FF</div>
+                <div class="title">Hack <span>Panel</span></div>
+            </div>
+            <div class="version">v5.2.1</div>
+        </div>
+        
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div>
+                <span class="status-dot"></span>
+                <span class="status-text"><strong>ACTIVE</strong> · 24ms latency</span>
+            </div>
+            <div class="status-time">⚡ 1.2ms</div>
+        </div>
+        
+        <!-- Feature Grid -->
+        <div class="grid">
+            <div class="feature-card active" onclick="toggleFeature(this)">
+                <div class="feature-label">🔫 Aimbot</div>
+                <div class="feature-value">
+                    Head Only
+                    <div class="toggle active"></div>
+                </div>
+                <div class="feature-detail">Priority: head | FOV: 150</div>
+            </div>
+            
+            <div class="feature-card" onclick="toggleFeature(this)">
+                <div class="feature-label">👁️ ESP</div>
+                <div class="feature-value">
+                    Box + Name
+                    <div class="toggle"></div>
+                </div>
+                <div class="feature-detail">Distance: 300m | All enemies</div>
+            </div>
+            
+            <div class="feature-card" onclick="toggleFeature(this)">
+                <div class="feature-label">📦 Item ESP</div>
+                <div class="feature-value">
+                    Weapons
+                    <div class="toggle"></div>
+                </div>
+                <div class="feature-detail">Show: Guns, Ammo, Meds</div>
+            </div>
+            
+            <div class="feature-card" onclick="toggleFeature(this)">
+                <div class="feature-label">🛡️ Anti-Recoil</div>
+                <div class="feature-value">
+                    Weapon
+                    <div class="toggle"></div>
+                </div>
+                <div class="feature-detail">Factor: 0.85 | All weapons</div>
+            </div>
+        </div>
+        
+        <!-- Slider -->
+        <div class="slider-container">
+            <div class="slider-header">
+                <span class="slider-label">Aim Smoothness</span>
+                <span class="slider-value" id="smoothnessValue">85</span>
+            </div>
+            <input type="range" min="0" max="100" value="85" 
+                   oninput="document.getElementById('smoothnessValue').textContent = this.value">
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-row">
+            <button class="btn btn-primary" onclick="inject()">⬆️ Inject</button>
+            <button class="btn btn-secondary" onclick="openSettings()">⚙️ Settings</button>
+            <button class="btn btn-danger" onclick="unload()">⛔ Unload</button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-text">
+                <span>●</span> injected · 1.2k mem
+            </div>
+            <div class="log-container" id="logDisplay">
+                [SYSTEM] Panel initialized
+            </div>
+            <div class="hotkey-hint">F6 · Menu</div>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================================
+        //  CORE PANEL CONTROLLER - PRODUCTION GRADE
+        // ============================================================
+        
+        const CONFIG = {
+            aimbot: true,
+            esp: false,
+            itemESP: false,
+            antiRecoil: false,
+            smoothness: 85,
+            fov: 150,
+            distance: 300,
+            status: 'active'
+        };
+        
+        // Feature toggle with state persistence
+        function toggleFeature(element) {
+            const toggle = element.querySelector('.toggle');
+            const label = element.querySelector('.feature-label').textContent.trim();
+            
+            // Toggle UI
+            element.classList.toggle('active');
+            toggle.classList.toggle('active');
+            
+            // Update config
+            const key = label.includes('Aimbot') ? 'aimbot' :
+                       label.includes('ESP') && !label.includes('Item') ? 'esp' :
+                       label.includes('Item') ? 'itemESP' : 'antiRecoil';
+            CONFIG[key] = !CONFIG[key];
+            
+            // Send to internal engine (simulated)
+            const state = CONFIG[key] ? 'ON' : 'OFF';
+            log(`[FEATURE] ${label} → ${state}`);
+            
+            // Visual feedback
+            const statusBar = document.querySelector('.status-text strong');
+            if (CONFIG.aimbot) {
+                statusBar.textContent = 'ACTIVE';
+                statusBar.style.color = '#00ff88';
+            } else {
+                statusBar.textContent = 'PASSIVE';
+                statusBar.style.color = '#ff6644';
+            }
+        }
+        
+        // Slider real-time update
+        document.querySelector('input[type="range"]').addEventListener('input', function() {
+            CONFIG.smoothness = parseInt(this.value);
+            log(`[CONFIG] Smoothness set to ${CONFIG.smoothness}%`);
+        });
+        
+        // Inject handler - simulates DLL injection
+        function inject() {
+            log('[INJECT] Starting injection sequence...');
+            
+            const steps = [
+                'Allocating memory region...',
+                'Writing shellcode to 0x7FF8A3C4...',
+                'Resolving imports...',
+                'Hooking DXGI Present...',
+                'Installing detours...',
+                '✅ Injection successful (PID: 4382)'
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < steps.length) {
+                    log(`[INJECT] ${steps[i]}`);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    document.querySelector('.status-time').textContent = '⚡ 0.8ms';
+                    document.querySelector('.footer-text span').textContent = '●';
+                    document.querySelector('.footer-text span').style.color = '#00ff88';
+                    
+                    // Update status
+                    const statusBar = document.querySelector('.status-text strong');
+                    statusBar.textContent = 'INJECTED';
+                    statusBar.style.color = '#00ff88';
+                }
+            }, 300);
+            
+            // Visual feedback
+            document.querySelector('.btn-primary').textContent = '✅ Injected';
+            document.querySelector('.btn-primary').style.background = 'linear-gradient(135deg, #00cc66, #008844)';
+            setTimeout(() => {
+                document.querySelector('.btn-primary').textContent = '⬆️ Inject';
+                document.querySelector('.btn-primary').style.background = 'linear-gradient(135deg, #ff3333, #cc0000)';
+            }, 3000);
+        }
+        
+        // Settings panel
+        function openSettings() {
+            log('[SETTINGS] Opening configuration panel');
+            const settings = `
+                FOV Radius: ${CONFIG.fov}px
+                Max Distance: ${CONFIG.distance}m
+                Aim Priority: Head (95%)
+                Smoothing: ${CONFIG.smoothness}%
+                Anti-Recoil Factor: 0.85
+                Target Lock: ON
+                Prediction: Kalman (enabled)
+            `;
+            
+            // Simulated modal
+            alert('⚙️ CONFIGURATION\n\n' + settings + '\n\n[DEBUG] Memory: 0x7FF8A3C4\n[DEBUG] Thread: ID 9732');
+            log('[SETTINGS] Panel closed');
+        }
+        
+        // Unload handler
+        function unload() {
+            log('[UNLOAD] Removing hooks...');
+            
+            const steps = [
+                'Restoring DXGI hooks...',
+                'Freeing allocated memory...',
+                'Detaching from process...',
+                '✅ Unloaded successfully'
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < steps.length) {
+                    log(`[UNLOAD] ${steps[i]}`);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    document.querySelector('.status-time').textContent = '⚡ 0.0ms';
+                    document.querySelector('.footer-text span').textContent = '○';
+                    document.querySelector('.footer-text span').style.color = '#ff3333';
+                    
+                    // Update status
+                    const statusBar = document.querySelector('.status-text strong');
+                    statusBar.textContent = 'UNLOADED';
+                    statusBar.style.color = '#ff6644';
+                    
+                    // Reset all toggles
+                    document.querySelectorAll('.feature-card').forEach(el => {
+                        el.classList.remove('active');
+                        const toggle = el.querySelector('.toggle');
+                        if (toggle) toggle.classList.remove('active');
+                    });
+                    
+                    // Reset config
+                    CONFIG.aimbot = false;
+                    CONFIG.esp = false;
+                    CONFIG.itemESP = false;
+                    CONFIG.antiRecoil = false;
+                }
+            }, 300);
+        }
+        
+        // Logging system with buffer
+        function log(message) {
+            const logDisplay = document.getElementById('logDisplay');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            logDisplay.textContent = logEntry;
+            logDisplay.style.color = '#00ff88';
+            
+            // Fade effect
+            setTimeout(() => {
+                logDisplay.style.color = '#444';
+            }, 2000);
+        }
+        
+        // Initialize with system message
+        document.addEventListener('DOMContentLoaded', function() {
+            log('[SYSTEM] Panel initialized');
+            
+            // Simulate connection check
+            setTimeout(() => {
+                log('[NETWORK] Game process detected (PID: 4382)');
+            }, 500);
+            
+            setTimeout(() => {
+                log('[MEMORY] Loaded modules: 43');
+            }, 1000);
+            
+            // Auto-aimbot status
+            const statusBar = document.querySelector('.status-text strong');
+            statusBar.textContent = 'ACTIVE';
+            statusBar.style.color = '#00ff88';
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F6') {
+                e.preventDefault();
+                log('[HOTKEY] F6 pressed - toggling menu');
+                // Simulate menu toggle
+                document.querySelector('.panel').style.opacity = 
+                    document.querySelector('.panel').style.opacity === '0.3' ? '1' : '0.3';
+            }
+            
+            if (e.key === 'Insert') {
+                e.preventDefault();
+                log('[HOTKEY] Insert - emergency unload');
+                unload();
+            }
+        });
+        
+        // Auto-reconnect simulation
+        setInterval(() => {
+            if (CONFIG.aimbot) {
+                const randomLatency = (Math.random() * 3 + 1).toFixed(1);
+                document.querySelector('.status-time').textContent = `⚡ ${randomLatency}ms`;
+            }
+        }, 2000);
+        
+        // Console override for stealth
+        console.log = function(msg) {
+            if (msg.includes('CONFIG') || msg.includes('INJECT') || msg.includes('UNLOAD')) {
+                log('[CONSOLE] ' + msg);
+            }
+        };
+        
+        // Export module interface
+        window.FFPanel = {
+            config: CONFIG,
+            toggleFeature: toggleFeature,
+            inject: inject,
+            unload: unload,
+            log: log
+        };
+        
+        console.log('[MODULE] Free Fire Panel v5.2.1 loaded');
+        console.log('[MODULE] Exported: FFPanel');
+    </script>
+</body>
+</html>
+```
